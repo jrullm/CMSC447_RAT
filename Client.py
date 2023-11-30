@@ -9,6 +9,7 @@ MAX_SIZE = sys.maxsize
 
 HOST = "127.0.0.1"  # The server's hostname or IP address
 PORT = 65432  # The port used by the server
+to_send
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
@@ -22,7 +23,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data = conn.recv(MAX_SIZE)
                 if not data:
                     break
-                pickle.loads(data).run()
+                to_send = pickle.loads(data).run()
                 
             # Sending data to client
             s.connect((HOST, PORT))
