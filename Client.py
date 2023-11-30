@@ -11,8 +11,8 @@ def pickleTesting():
         
         s.connect((HOST, PORT))
         data = s.recv(1024000)
-        deSerialized = pickle.loads(data).run()
-        
+        deSerialized = pickle.loads(data)["run"]()
+
         s.sendall(deSerialized)
         print("done")
 
