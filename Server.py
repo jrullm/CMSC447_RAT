@@ -13,7 +13,9 @@ MAX_SIZE = sys.maxsize
 
 class command(ABC):
     @abstractmethod
+    
     # Pickle object
+    @property
     created_pickle
     
     def run(self):
