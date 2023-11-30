@@ -1,23 +1,12 @@
-#Here is the Server by Colby and Co.
-# https://realpython.com/python-sockets/#tcp-sockets
-
 # echo-server.py
 
 import socket
 import pickle
-import sys
-
 from abc import ABC, abstractmethod
 
-MAX_SIZE = sys.maxsize
-
+#PICKLE CLASS
 class command(ABC):
     @abstractmethod
-    
-    # Pickle object
-    @property
-    created_pickle
-    
     def run(self):
         pass
 
@@ -26,31 +15,48 @@ class helloPickle(command):
     def run(self):
         created_pickle = pickle.dumps("Hello pickle!")
         return created_pickle
-
-if __name__ == "__main__":
-
-    to_send = pickle.dumps(helloPickle())
     
+def pickleMainTesting():
     HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
     PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
-    data
-    
+
+    to_send = pickle.dumps(helloPickle())
+
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()
-        conn, addr = s.accept()
-        
-        with conn:
-            # Sending data to client
-            s.connect((HOST, PORT))
-            s.sendall(to_send)
+        data = pickle.dumps(helloPickle())
 
-            #Receiving data from client
+        conn, addr = s.accept()
+        with conn:
+            conn.sendall(data)    
             print(f"Connected by {addr}")
             while True:
-                data = conn.recv(MAX_SIZE)
-                if not data:
+                recieved = conn.recv(1024000)
+                deSerialized = pickle.loads(recieved)
+                if not recieved:
                     break
-                    
-            #Deserialize data
-            print(pickle.loads(data))
+                print("Received", deSerialized)
+
+def helloWorldTesting():
+    HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
+    PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind((HOST, PORT))
+        s.listen()
+        data = b"Hello World"
+        conn, addr = s.accept()
+        with conn:
+            conn.sendall(data)    
+            print(f"Connected by {addr}")
+            while True:
+                recieved = conn.recv(1024)
+                if not recieved:
+                    break
+                print(f"Received {recieved!r}")
+
+
+
+if __name__ == "__main__":
+    pickleMainTesting()
