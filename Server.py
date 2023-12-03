@@ -47,7 +47,5 @@ def helloWorldTesting():
                 print(f"Received {recieved!r}")
 
 
-
-
 if __name__ == "__main__":
     execMainTesting()
