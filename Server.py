@@ -1,4 +1,4 @@
-
+# By Colby & Co. For SWE Senior Project. Do not commit crime.
 # echo-server.py
 
 import socket
@@ -27,7 +27,7 @@ s.sendall(reSerialized)"""
 def pickleMainTesting():
     HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
     PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
-
+    log = open("MysticMarmalade.txt", "a")
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
@@ -36,6 +36,7 @@ def pickleMainTesting():
             conn, addr = s.accept()
             with conn:
                 userCommand = input(">> ")
+                log.write(">> "+userCommand+"\n")
                 if userCommand == "quit":
                     data = pickle.dumps("quit")
                 else:
@@ -45,8 +46,10 @@ def pickleMainTesting():
                     break
                 recieved = conn.recv(1024000)
                 deSerialized = pickle.loads(recieved)
+                log.write("<< "+deSerialized+"\n")
                 #if not recieved:
                 print(deSerialized)
+    log.close()
 
 
 __name__ = "__main__"

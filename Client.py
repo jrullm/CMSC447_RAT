@@ -1,3 +1,4 @@
+# By Colby & Co. For SWE Senior Project. Do not commit crime.
 # echo-client.py
 
 import socket
